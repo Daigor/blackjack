@@ -33,10 +33,13 @@ class window.App extends Backbone.Model
     maxDealerScore = @findHigherScore(dealerScore)
     if maxDealerScore > playerMaxScore
       alert "Dealer wins"
+      @set('player', @get('player') - Number($('.value').val()))
     else if maxDealerScore == playerMaxScore 
       alert "Tie"
+      @set('player', Number(@get('player')))
     else  
       alert "Player Wins!"
+      @set('player', @get('player') + Number($('.value').val()))
     
   newGame: ->
     $('.game').empty()
@@ -49,9 +52,9 @@ class window.App extends Backbone.Model
   bust: ->
     playerScore = @get('playerHand').scores()
     playerMaxScore = @findHigherScore(playerScore)
-    console.log(playerMaxScore)
     if playerMaxScore == 0
       alert "Bust!"
+      @set('player', @get('player') - Number($('.value').val()))
       @newGame()
 
   startGame: ->
@@ -59,6 +62,5 @@ class window.App extends Backbone.Model
     @get('playerHand').at(0).flip()
     @get('playerHand').at(1).flip()
 
-  money: ->
-    # return @set('player', @get('player') - userinput.val())
+  
   

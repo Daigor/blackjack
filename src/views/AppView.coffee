@@ -1,10 +1,11 @@
 class window.AppView extends Backbone.View
   template: _.template '
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
-    <button class="bet-button">Bet</button>
     <form class="user-input">
-      Bet how Much? : <input type="number"></input>
+      Bet how Much? : <input class="value" type="number"></input>
+      <input class="bet" type="submit" value="Bet">
     </form>
+    <div>You have <%= player %> dollars</div>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
@@ -15,17 +16,16 @@ class window.AppView extends Backbone.View
       @render()
     'click .stand-button': ->  
       @model.get('playerHand').stand()
-    'click .bet-button': ->
-      console.log(@$('.user-input input').val())
+    'click .bet': ->
       @model.startGame()
-      @model.money()
+      event.preventDefault()
 
   initialize: -> 
     @render()
 
   render: ->
     @$el.children().detach()
-    @$el.html @template()
+    @$el.html @template(@model.attributes)
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
