@@ -1,11 +1,17 @@
 # TODO: Refactor this model to use an internal Game Model instead
 # of containing the game logic directly.
 class window.App extends Backbone.Model
+  defaults: 
+    deck : new Deck()
+
   initialize: ->
-    @set 'deck', deck = new Deck()
+    @set 'deck', deck = @get('deck')
+    console.log(@get('deck'))
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
-    @.get('playerHand').on('stand', => @findWinner()) 
+    @.get('playerHand').on('stand', => 
+      @findWinner()
+      @newGame()) 
 
 
   findHigherScore: (score) ->
@@ -22,10 +28,11 @@ class window.App extends Backbone.Model
     maxDealerScore = @findHigherScore(dealerScore)
     if maxDealerScore > playerMaxScore
       alert "Dealer wins"
-      new AppView(model: new App()).$el.prependTo 'body'
     else if maxDealerScore == playerMaxScore 
       alert "Tie"
-      new AppView(model: new App()).$el.prependTo 'body'
     else  
       alert "Player Wins!"
-      new AppView(model: new App()).$el.prependTo 'body'
+    
+  newGame: ->
+    $('.game').empty()
+    new AppView(model: new App({deck: @get('deck')})).$el.prependTo $('.game')
