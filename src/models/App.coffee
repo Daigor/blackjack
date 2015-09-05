@@ -5,10 +5,7 @@ class window.App extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
-    # @.get('playerHand').on 'hi', -> 
-    #   console.log 'got triggered'
-    #   return
-
+    
 
 
   
@@ -23,7 +20,10 @@ class window.App extends Backbone.Model
     playerScore = @get('playerHand').scores()
     playerMaxScore = @findHigherScore(playerScore)
     dealerScore = @get('dealerHand').scores()
-    maxDealerScore = Math.max(dealerScore[0], dealerScore[1])
-    if dealerScore > playerScore then alert "Dealer wins"
-    else 
+    console.log(playerScore)
+    console.log(dealerScore)
+    maxDealerScore = @findHigherScore(dealerScore)
+    if maxDealerScore > playerMaxScore then alert "Dealer wins"
+    else if maxDealerScore == playerMaxScore then alert "Tie"  
+    else  
       alert "Player Wins!"
