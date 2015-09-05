@@ -3,11 +3,14 @@
 class window.App extends Backbone.Model
   defaults: 
     deck : new Deck()
+    player : 1000
+
 
   initialize: ->
     @set 'deck', deck = @get('deck')
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
+    @set 'player', @get('player')
     @get('playerHand').on('stand', => 
       @findWinner()
       @newGame())
@@ -37,7 +40,11 @@ class window.App extends Backbone.Model
     
   newGame: ->
     $('.game').empty()
-    new AppView(model: new App({deck: @get('deck')})).$el.prependTo $('.game')
+    new AppView(model: new App({ 
+      deck: @get('deck'),
+      player: @get('player')
+      })).
+      $el.prependTo $('.game')
 
   bust: ->
     playerScore = @get('playerHand').scores()
@@ -51,4 +58,7 @@ class window.App extends Backbone.Model
     @get('dealerHand').at(1).flip()
     @get('playerHand').at(0).flip()
     @get('playerHand').at(1).flip()
+
+  money: ->
+    # return @set('player', @get('player') - userinput.val())
   

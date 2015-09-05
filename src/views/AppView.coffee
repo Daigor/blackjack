@@ -2,6 +2,9 @@ class window.AppView extends Backbone.View
   template: _.template '
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
     <button class="bet-button">Bet</button>
+    <form class="user-input">
+      Bet how Much? : <input type="number"></input>
+    </form>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
@@ -13,7 +16,9 @@ class window.AppView extends Backbone.View
     'click .stand-button': ->  
       @model.get('playerHand').stand()
     'click .bet-button': ->
+      console.log(@$('.user-input input').val())
       @model.startGame()
+      @model.money()
 
   initialize: -> 
     @render()
