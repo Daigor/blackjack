@@ -5,10 +5,8 @@ class window.App extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
-    
+    @.get('playerHand').on('stand', => @findWinner()) 
 
-
-  
 
   findHigherScore: (score) ->
     if score[0] > 21 then score[0] = null
@@ -16,14 +14,18 @@ class window.App extends Backbone.Model
     return Math.max score[0], score[1]
     
 
-  findWinner: ->
+  findWinner: =>
+    @get('dealerHand').at(0).flip()
     playerScore = @get('playerHand').scores()
     playerMaxScore = @findHigherScore(playerScore)
     dealerScore = @get('dealerHand').scores()
-    console.log(playerScore)
-    console.log(dealerScore)
     maxDealerScore = @findHigherScore(dealerScore)
-    if maxDealerScore > playerMaxScore then alert "Dealer wins"
-    else if maxDealerScore == playerMaxScore then alert "Tie"  
+    if maxDealerScore > playerMaxScore
+      alert "Dealer wins"
+      new AppView(model: new App()).$el.prependTo 'body'
+    else if maxDealerScore == playerMaxScore 
+      alert "Tie"
+      new AppView(model: new App()).$el.prependTo 'body'
     else  
       alert "Player Wins!"
+      new AppView(model: new App()).$el.prependTo 'body'

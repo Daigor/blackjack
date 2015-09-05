@@ -7,8 +7,10 @@ class window.Hand extends Backbone.Collection
     @add(@deck.pop())
     @last()
 
-  stand: ->
-    @scores()
+
+  stand: =>
+    @trigger 'stand'
+   
 
 
   hasAce: -> @reduce (memo, card) ->

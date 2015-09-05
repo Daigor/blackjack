@@ -13,3 +13,7 @@ describe 'deck', ->
       assert.strictEqual deck.length, 50
       assert.strictEqual deck.last(), hand.hit()
       assert.strictEqual deck.length, 49
+
+  describe 'stand', ->
+    it 'should flip the dealer\'s card', ->
+      
